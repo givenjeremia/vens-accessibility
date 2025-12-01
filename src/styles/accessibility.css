@@ -1,4 +1,28 @@
-body.a11y-high-contrast {
-  background: black !important;
-  color: yellow !important;
+.a11y-dyslexia {
+  font-family: "OpenDyslexic", Arial, sans-serif;
+}
+
+.a11y-links a {
+  outline: 2px dashed orange;
+}
+
+.a11y-titles h1,
+.a11y-titles h2,
+.a11y-titles h3 {
+  background: rgba(0, 123, 255, 0.15);
+}
+
+.a11y-big-cursor * {
+  cursor: zoom-in !important;
+}
+
+.a11y-reading-guide::before {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2rem;
+  background: rgba(255,255,0,.2);
+  z-index: 9999;
 }

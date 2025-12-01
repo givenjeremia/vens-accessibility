@@ -1,19 +1,13 @@
 import { useAccessibilityContext } from "../context/AccessibilityContext";
 export function useAccessibility() {
     const { state, setState } = useAccessibilityContext();
-    return {
-        state,
-        setFontScale(scale) {
-            setState((prev) => ({
-                ...prev,
-                fontScale: scale,
-            }));
-        },
-        toggleHighContrast() {
-            setState((prev) => ({
-                ...prev,
-                highContrast: !prev.highContrast,
-            }));
-        },
-    };
+    function update(key, value) {
+        setState((prev) => ({ ...prev, [key]: value }));
+    }
+    function reset() {
+        setState((prev) => ({ ...prev }));
+        localStorage.removeItem("vens-accessibility");
+        location.reload();
+    }
+    return { state, update, reset };
 }
