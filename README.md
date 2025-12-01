@@ -1,26 +1,14 @@
 # vens-accessibility ♿
 
-Library **Accessibility Control** untuk Next.js / React  
-Bahasa: 🇮🇩 Indonesia
+Library Accessibility sederhana untuk Next.js (Bahasa Indonesia)
 
-## Fitur Utama
-- Pengaturan ukuran font
-- Font ramah disleksia
-- Kontras tinggi / gelap
-- Saturasi & monokrom
-- Text To Speech
-- Cursor besar
-- Pengaturan tersimpan otomatis
-
-## Instalasi
-```bash
-npm install vens-accessibility
-```
-
-## Penggunaan
+## Cara Pakai
 ```tsx
 import "vens-accessibility/src/styles/accessibility.css";
-import { AccessibilityProvider, AccessibilityWidget } from "vens-accessibility";
+import {
+  AccessibilityProvider,
+  AccessibilityWidget
+} from "vens-accessibility";
 
 export default function RootLayout({ children }) {
   return (
@@ -32,5 +20,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-✅ Siap production  
-✅ Bisa dipakai di banyak aplikasi
+## Fitur
+- Perbesar teks
+- Mode kontras tinggi
+- State tersimpan otomatis

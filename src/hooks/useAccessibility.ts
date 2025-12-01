@@ -1,0 +1,23 @@
+import { useAccessibilityContext } from "../context/AccessibilityContext";
+
+export function useAccessibility() {
+  const { state, setState } = useAccessibilityContext();
+
+  return {
+    state,
+
+    setFontScale(scale: number) {
+      setState((prev) => ({
+        ...prev,
+        fontScale: scale,
+      }));
+    },
+
+    toggleHighContrast() {
+      setState((prev) => ({
+        ...prev,
+        highContrast: !prev.highContrast,
+      }));
+    },
+  };
+}

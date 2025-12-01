@@ -1,10 +1,4 @@
-body {
-  font-size: calc(16px * var(--a11y-font-scale, 1));
-}
-body.a11y-dyslexia {
-  font-family: Arial, sans-serif;
-}
-body[data-theme="high-contrast"] {
-  background: black;
-  color: yellow;
+body.a11y-high-contrast {
+  background: black !important;
+  color: yellow !important;
 }

@@ -6,7 +6,8 @@
     "outDir": "dist",
     "jsx": "react-jsx",
     "strict": true,
-    "moduleResolution": "Bundler"
+    "moduleResolution": "Bundler",
+    "skipLibCheck": true
   },
   "include": ["src"]
 }
