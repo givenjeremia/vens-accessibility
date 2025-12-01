@@ -1,7 +1,7 @@
 {
   "name": "vens-accessibility",
   "version": "1.0.0",
-  "description": "Library accessibility lengkap untuk Next.js (Bahasa Indonesia)",
+  "description": "Accessibility Control lengkap untuk Next.js (Popup kiri, WCAG inspired)",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
