@@ -1,0 +1,17 @@
+{
+  "name": "vens-accessibility",
+  "version": "1.0.0",
+  "description": "Library accessibility lengkap untuk Next.js & React",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "src/styles"],
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  }
+}
