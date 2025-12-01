@@ -1,2 +1,3 @@
-export const ACCESSIBILITY_CSS =
-  "vens-accessibility/src/styles/accessibility.css";
+export { AccessibilityProvider } from "./provider/AccessibilityProvider";
+export { useAccessibility } from "./hooks/useAccessibility";
+export { default as AccessibilityWidget } from "./components/AccessibilityWidget";
