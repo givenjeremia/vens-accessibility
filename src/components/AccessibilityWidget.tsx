@@ -71,7 +71,7 @@ export default function AccessibilityWidget() {
           boxShadow: "2px 0 10px rgba(0,0,0,.15)",
         }}
       >
-        <h2 style={{ marginBottom: 8 }}>Aksesibilitas</h2>
+        <h2 style={{ marginBottom: 8 }}>Aksesibilitas Data</h2>
         <hr />
 
         {/* LANGUAGE */}
