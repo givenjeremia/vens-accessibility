@@ -11,6 +11,7 @@
     "src/styles"
   ],
   "scripts": {
+    "dev": "tsc --watch",
     "build": "tsc"
   },
   "peerDependencies": {

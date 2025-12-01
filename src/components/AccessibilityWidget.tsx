@@ -1,43 +1,37 @@
 "use client";
-
-import React, { useState } from "react";
+import { useState } from "react";
 import { useAccessibility } from "../hooks/useAccessibility";
-import { speakSelectedText } from "../utils/tts";
 
-
-const LANGUAGES = [
-  "Indonesian","English","Arabic","Japanese","Chinese","Korean","French",
-  "German","Spanish","Portuguese","Russian","Hindi","Bengali","Urdu"
-];
+function Card({
+  label,
+  onClick,
+}: {
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="bg-white border rounded-xl p-4 flex flex-col items-center justify-center hover:bg-gray-100 transition"
+    >
+      <div className="text-xl font-bold mb-2">Aa</div>
+      <span className="text-sm font-medium text-center">
+        {label}
+      </span>
+    </button>
+  );
+}
 
 export default function AccessibilityWidget() {
   const { state, update, reset } = useAccessibility();
   const [open, setOpen] = useState(false);
-
-  const Section = ({ title, children }: any) => (
-    <section style={{ marginBottom: 16 }}>
-      <h4 style={{ fontWeight: 600, marginBottom: 8 }}>{title}</h4>
-      {children}
-    </section>
-  );
 
   return (
     <>
       {/* FLOATING BUTTON */}
       <button
         onClick={() => setOpen(true)}
-        style={{
-          position: "fixed",
-          left: 0,
-          top: "40%",
-          zIndex: 10000,
-          background: "#2563eb",
-          color: "#fff",
-          padding: "12px",
-          borderRadius: "0 8px 8px 0",
-          cursor: "pointer",
-        }}
-        aria-label="Accessibility Menu"
+        className="fixed left-0 top-1/2 -translate-y-1/2 bg-blue-600 text-white p-3 rounded-r-xl z-[10000]"
       >
         ♿
       </button>
@@ -46,277 +40,184 @@ export default function AccessibilityWidget() {
       {open && (
         <div
           onClick={() => setOpen(false)}
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,.3)",
-            zIndex: 9998,
-          }}
+          className="fixed inset-0 bg-black/40 z-[9999]"
         />
       )}
 
       {/* PANEL */}
       <aside
-        style={{
-          position: "fixed",
-          top: 0,
-          left: open ? 0 : "-360px",
-          width: 340,
-          height: "100vh",
-          background: "#fff",
-          zIndex: 9999,
-          padding: 16,
-          overflowY: "auto",
-          transition: "left .3s",
-          boxShadow: "2px 0 10px rgba(0,0,0,.15)",
-        }}
+        className={`fixed top-0 left-0 h-screen w-[360px] bg-gray-100 z-[10000] 
+        transition-transform duration-300
+        ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
-        <h2 style={{ marginBottom: 8 }}>Aksesibilitas Data</h2>
-        <hr />
+        {/* HEADER */}
+        <div className="bg-blue-600 text-white p-4 flex justify-between items-center">
+          <h2 className="font-semibold">Accessibility Menu</h2>
+          <button onClick={() => setOpen(false)}>✕</button>
+        </div>
 
-        {/* LANGUAGE */}
-        <Section title="Bahasa">
+        <div className="p-4 space-y-6 overflow-y-auto h-full">
+          {/* LANGUAGE */}
           <select
             value={state.language}
-            onChange={(e) => update("language", e.target.value)}
-            style={{ width: "100%" }}
+            onChange={(e) =>
+              update("language", e.target.value)
+            }
+            className="w-full rounded-full p-3 border"
           >
-            {LANGUAGES.map((l) => (
-              <option key={l}>{l}</option>
-            ))}
-          </select>
-        </Section>
-
-        {/* FONT */}
-        <Section title="Teks">
-          <label>Ukuran Huruf</label>
-          <input
-            type="range"
-            min={0.8}
-            max={1.8}
-            step={0.1}
-            value={state.fontSize}
-            onChange={(e) => update("fontSize", +e.target.value)}
-          />
-
-          <label>Ketebalan</label>
-          <input
-            type="range"
-            min={300}
-            max={800}
-            step={100}
-            value={state.fontWeight}
-            onChange={(e) => update("fontWeight", +e.target.value)}
-          />
-
-          <label>
-            <input
-              type="checkbox"
-              checked={state.dyslexiaFont}
-              onChange={() =>
-                update("dyslexiaFont", !state.dyslexiaFont)
-              }
-            />{" "}
-            Font Disleksia
-          </label>
-        </Section>
-
-        {/* SPACING */}
-        <Section title="Spasi">
-          <label>Spasi Huruf</label>
-          <input
-            type="range"
-            min={0}
-            max={0.3}
-            step={0.05}
-            value={state.letterSpacing}
-            onChange={(e) =>
-              update("letterSpacing", +e.target.value)
-            }
-          />
-
-          <label>Jarak Baris</label>
-          <input
-            type="range"
-            min={1}
-            max={2.5}
-            step={0.1}
-            value={state.lineHeight}
-            onChange={(e) =>
-              update("lineHeight", +e.target.value)
-            }
-          />
-        </Section>
-
-        {/* HIGHLIGHT */}
-        <Section title="Highlight">
-          <label>
-            <input
-              type="checkbox"
-              checked={state.highlightLinks}
-              onChange={() =>
-                update(
-                  "highlightLinks",
-                  !state.highlightLinks
-                )
-              }
-            />{" "}
-            Sorot Link
-          </label>
-
-          <label>
-            <input
-              type="checkbox"
-              checked={state.highlightTitles}
-              onChange={() =>
-                update(
-                  "highlightTitles",
-                  !state.highlightTitles
-                )
-              }
-            />{" "}
-            Sorot Judul
-          </label>
-        </Section>
-
-        {/* COLORS */}
-        <Section title="Warna & Kontras">
-          <label>Brightness</label>
-          <input
-            type="range"
-            min={0.6}
-            max={1.4}
-            step={0.05}
-            value={state.brightness}
-            onChange={(e) =>
-              update("brightness", +e.target.value)
-            }
-          />
-
-          <label>Blue Light</label>
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.1}
-            value={state.blueLight}
-            onChange={(e) =>
-              update("blueLight", +e.target.value)
-            }
-          />
-
-          <label>Mode Kontras</label>
-          <select
-            value={state.contrast}
-            onChange={(e) =>
-              update("contrast", e.target.value as any)
-            }
-          >
-            <option value="normal">Normal</option>
-            <option value="dark">Dark</option>
-            <option value="high">High</option>
-            <option value="light">Light</option>
+            <option>English</option>
+            <option>Indonesia</option>
+            <option>Arabic</option>
+            <option>Japanese</option>
           </select>
 
-          <label>Saturasi</label>
-          <select
-            value={state.saturation}
-            onChange={(e) =>
-              update("saturation", e.target.value as any)
-            }
-          >
-            <option value="normal">Normal</option>
-            <option value="high">Tinggi</option>
-            <option value="low">Rendah</option>
-            <option value="mono">Monokrom</option>
-          </select>
+          {/* CONTENT */}
+          <section>
+            <h3 className="font-bold mb-3">
+              Content Adjustments
+            </h3>
+            <div className="grid grid-cols-3 gap-3">
+              <Card
+                label="Font Size"
+                onClick={() =>
+                  update("fontSize", state.fontSize + 0.1)
+                }
+              />
+              <Card
+                label="Highlight Title"
+                onClick={() =>
+                  update(
+                    "highlightTitles",
+                    !state.highlightTitles
+                  )
+                }
+              />
+              <Card
+                label="Highlight Links"
+                onClick={() =>
+                  update(
+                    "highlightLinks",
+                    !state.highlightLinks
+                  )
+                }
+              />
+              <Card
+                label="Dyslexia Font"
+                onClick={() =>
+                  update(
+                    "dyslexiaFont",
+                    !state.dyslexiaFont
+                  )
+                }
+              />
+              <Card
+                label="Letter Spacing"
+                onClick={() =>
+                  update(
+                    "letterSpacing",
+                    state.letterSpacing + 0.05
+                  )
+                }
+              />
+              <Card
+                label="Line Height"
+                onClick={() =>
+                  update(
+                    "lineHeight",
+                    state.lineHeight + 0.1
+                  )
+                }
+              />
+            </div>
+          </section>
 
-          <label>Warna Teks</label>
-          <input
-            type="color"
-            value={state.textColor}
-            onChange={(e) =>
-              update("textColor", e.target.value)
-            }
-          />
-        </Section>
+          {/* COLORS */}
+          <section>
+            <h3 className="font-bold mb-3">
+              Color Adjustments
+            </h3>
+            <div className="grid grid-cols-3 gap-3">
+              <Card
+                label="Dark Contrast"
+                onClick={() =>
+                  update("contrast", "dark")
+                }
+              />
+              <Card
+                label="Light Contrast"
+                onClick={() =>
+                  update("contrast", "light")
+                }
+              />
+              <Card
+                label="High Contrast"
+                onClick={() =>
+                  update("contrast", "high")
+                }
+              />
+              <Card
+                label="High Saturation"
+                onClick={() =>
+                  update("saturation", "high")
+                }
+              />
+              <Card
+                label="Low Saturation"
+                onClick={() =>
+                  update("saturation", "low")
+                }
+              />
+              <Card
+                label="Monochrome"
+                onClick={() =>
+                  update("saturation", "mono")
+                }
+              />
+            </div>
+          </section>
 
-        {/* TOOLS */}
-        <Section title="Alat Bantu">
-          <label>
-            <input
-              type="checkbox"
-              checked={state.bigCursor}
-              onChange={() =>
-                update("bigCursor", !state.bigCursor)
-              }
-            />{" "}
-            Kursor Besar
-          </label>
-
-          <label>
-            <input
-              type="checkbox"
-              checked={state.readingGuide}
-              onChange={() =>
-                update(
-                  "readingGuide",
-                  !state.readingGuide
-                )
-              }
-            />{" "}
-            Panduan Membaca
-          </label>
-
-          <label>Zoom Halaman</label>
-          <input
-            type="range"
-            min={1}
-            max={2}
-            step={0.1}
-            value={state.zoom}
-            onChange={(e) =>
-              update("zoom", +e.target.value)
-            }
-          />
+          {/* TOOLS */}
+          <section>
+            <h3 className="font-bold mb-3">Tools</h3>
+            <div className="grid grid-cols-3 gap-3">
+              <Card
+                label="Zoom"
+                onClick={() =>
+                  update("zoom", state.zoom + 0.1)
+                }
+              />
+              <Card
+                label="Big Cursor"
+                onClick={() =>
+                  update(
+                    "bigCursor",
+                    !state.bigCursor
+                  )
+                }
+              />
+              <Card
+                label="Reading Guide"
+                onClick={() =>
+                  update(
+                    "readingGuide",
+                    !state.readingGuide
+                  )
+                }
+              />
+            </div>
+          </section>
 
           <button
-            style={{
-              marginTop: 8,
-              padding: 8,
-              width: "100%",
-              background: "#2563eb",
-              color: "#fff",
-              borderRadius: 6,
-            }}
-            onClick={() =>
-              speakSelectedText(
-                state.language === "English"
-                  ? "en-US"
-                  : "id-ID"
-              )
-            }
+            onClick={reset}
+            className="w-full py-3 mt-4 bg-red-500 text-white rounded-xl"
           >
-            🎤 Baca Teks Terpilih
+            Reset All
           </button>
-        </Section>
 
-        <hr />
-
-        {/* RESET */}
-        <button
-          onClick={reset}
-          style={{
-            width: "100%",
-            padding: 10,
-            marginTop: 12,
-            background: "#ef4444",
-            color: "#fff",
-            borderRadius: 6,
-          }}
-        >
-          Reset Semua
-        </button>
+          <p className="text-center text-xs text-gray-500 mt-4">
+            Web Accessibility by Vens ❤️
+          </p>
+        </div>
       </aside>
     </>
   );
